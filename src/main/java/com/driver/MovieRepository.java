@@ -53,13 +53,14 @@ public class MovieRepository {
         return null;
     }
     List<String> getMoviesByDirectorName(String name){
-        List<String> movienames = new ArrayList<>();
+        //List<String> movienames = new ArrayList<>();
         if(movieDirectorHashMap.containsKey(name))
         {
-            movienames = movieDirectorHashMap.get(name);
+            List<String> movies = movieDirectorHashMap.get(name);
+            return movies;
 
         }
-        return movienames;
+        return null;
 
     }
     List<String> findAllMovies()
@@ -73,10 +74,10 @@ public class MovieRepository {
     }
     void deleteDirectorByName(String name)
     {
-        List<String> temp = new ArrayList<>();
+
         if(movieDirectorHashMap.containsKey(name))
         {
-             temp = movieDirectorHashMap.get(name);
+            List<String> temp = movieDirectorHashMap.get(name);
              deleteformmovies(temp);
             movieDirectorHashMap.remove(name);
         }
