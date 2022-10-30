@@ -4,88 +4,59 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 @Component
 public class MovieRepository {
-    private List<Movie> movieList = new ArrayList<>();
-    private List<Director> directorList = new ArrayList<>();
+    private HashMap<String,Movie> movieList = new HashMap<>();
+    private HashMap<String,Director> directorList = new HashMap<>();
     private HashMap<String,List<String>> movieDirectorHashMap = new HashMap<>();
     void addmovie(Movie movie)
     {
-        movieList.add(movie);
+        movieList.put(movie.getName(),movie);
     }
     void  adddirector(Director director)
     {
-        directorList.add(director);
+        directorList.put(director.getName(),director);
     }
     void addmoviedirectorpair(String moviename, String directorname)
     {
-        if(movieDirectorHashMap.containsKey(directorname))
-        {
-            List<String> curr = movieDirectorHashMap.get(directorname);
-            curr.add(moviename);
-            movieDirectorHashMap.put(directorname,curr);
-        }
-        else
-        {
-            List<String> curr = new ArrayList<>();
-            curr.add(moviename);
-            movieDirectorHashMap.put(directorname,curr);
-        }
+        List<String> movies = movieDirectorHashMap.get(directorname);
+        movies.add(moviename);
+        movieDirectorHashMap.put(directorname,movies);
     }
     Movie getmoviebyname(String name)
     {
-        for(Movie movie: movieList)
-        {
-            if(movie.name.equals(name))
-            {
-                return movie;
-            }
-        }
-        return null;
+        return movieList.get(name);
     }
     Director getdirectorbyname(String name)
     {
-        for(Director director: directorList)
-        {
-            if(director.name.equals(name))
-            {
-                return director;
-            }
-        }
-        return null;
+        return directorList.get(name);
     }
     List<String> getMoviesByDirectorName(String name){
-        //List<String> movienames = new ArrayList<>();
-        if(movieDirectorHashMap.containsKey(name))
-        {
-            List<String> movies = movieDirectorHashMap.get(name);
-            return movies;
+        List<String> movies = movieDirectorHashMap.get(name);
+        return movies;
 
-        }
-        return null;
 
     }
     List<String> findAllMovies()
     {
         List<String> movies = new ArrayList<>();
-        for(Movie movie:movieList)
+        for(Map.Entry<String,Movie> e:movieList.entrySet())
         {
-            movies.add(movie.getName());
+            movies.add(e.getKey());
         }
         return movies;
     }
     void deleteDirectorByName(String name)
     {
 
-        if(movieDirectorHashMap.containsKey(name))
+        List<String> movies = movieDirectorHashMap.get(name);
+        for(String mname:movies)
         {
-            List<String> temp = movieDirectorHashMap.get(name);
-             deleteformmovies(temp);
-            movieDirectorHashMap.remove(name);
+            movieList.remove(mname);
         }
-        for(Director director:directorList)
-        {
-            if(director.name.equals(name))
-                directorList.remove(director);
-        }
+        //Map.entrySet().removeIf(entry -> KeySet.contains(entry.getKey()) );
+        directorList.remove(name);
+        movieDirectorHashMap.remove(name);
+
+
 
     }
     void deleteAllDirectors()
@@ -94,21 +65,16 @@ public class MovieRepository {
         for(Map.Entry<String, List<String>> e :movieDirectorHashMap.entrySet())
         {
             List<String> temp = e.getValue();
-            deleteformmovies(temp);
+            for(String mname:temp)
+            {
+                movieList.remove(mname);
+            }
+            //deleteformmovies(temp);
             //movieDirectorHashMap.remove(e);
         }
         movieDirectorHashMap.clear();
 
     }
-    void deleteformmovies(List<String> temp)
-    {
-        for(String mname : temp)
-        {
-            for(Movie movie : movieList)
-            {
-                if(movie.getName().equals(mname))
-                    movieList.remove(movie);
-            }
-        }
-    }
+
+
 }
