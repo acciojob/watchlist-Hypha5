@@ -4,8 +4,8 @@ public class Movie {
     String name;
     int durationInMinutes;
     double imdbRating;
-    Movie(){}
-    Movie(String name, int time,double rating)
+    public Movie(){}
+    public Movie(String name, int time,double rating)
     {
         this.name = name;
         this.durationInMinutes = time;
