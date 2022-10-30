@@ -95,8 +95,9 @@ public class MovieRepository {
         {
             List<String> temp = e.getValue();
             deleteformmovies(temp);
-            movieDirectorHashMap.remove(e);
+            //movieDirectorHashMap.remove(e);
         }
+        movieDirectorHashMap.clear();
 
     }
     void deleteformmovies(List<String> temp)
