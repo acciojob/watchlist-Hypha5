@@ -77,6 +77,7 @@ public class MovieRepository {
         if(movieDirectorHashMap.containsKey(name))
         {
              temp = movieDirectorHashMap.get(name);
+             deleteformmovies(temp);
             movieDirectorHashMap.remove(name);
         }
         for(Director director:directorList)
@@ -84,7 +85,7 @@ public class MovieRepository {
             if(director.name.equals(name))
                 directorList.remove(director);
         }
-        deleteformmovies(temp);
+
     }
     void deleteAllDirectors()
     {
